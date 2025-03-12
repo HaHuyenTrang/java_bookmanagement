@@ -3,35 +3,38 @@ package bai11;
 import java.util.Scanner;
 
 public class Book {
-    private int bookId;
+    private String bookId;
     private String bookName;
-    private int importPrice;
-    private int exportPrice;
+    private double importPrice;
+    private double exportPrice;
     private String title;
     private String author;
-    private int interest;
+    private double interest;
     private int year;
 
     public Book() {}
 
-    public Book(int bookId, String bookName, int importPrice, int exportPrice, String title, String author, int interest, int year) {
+    public Book(String bookId, String bookName, double importPrice, double exportPrice, String title, String author, int year) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.importPrice = importPrice;
         this.exportPrice = exportPrice;
         this.title = title;
         this.author = author;
-        this.interest = interest;
         this.year = year;
-
+        calculateInterest();
     }
-    // Getters and Setters
-    public int getBookId() {
+
+    public String getBookId() {
         return bookId;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setBookId(String bookId) {
+        if (bookId.matches("B\\d{4}")) {
+            this.bookId = bookId;
+        } else {
+            System.out.println("Mã sách không hợp lệ! Phải có 5 ký tự và bắt đầu bằng 'B'.");
+        }
     }
 
     public String getBookName() {
@@ -39,25 +42,38 @@ public class Book {
     }
 
     public void setBookName(String bookName) {
-        this.bookName = bookName;
+        if (bookName.length() >= 6 && bookName.length() <= 100) {
+            this.bookName = bookName;
+        } else {
+            System.out.println("Tên sách phải từ 6-100 ký tự.");
+        }
     }
 
-    public int getImportPrice() {
+    public double getImportPrice() {
         return importPrice;
     }
 
-    public void setImportPrice(int importPrice) {
-        this.importPrice = importPrice;
-        this.interest = calInterest(this.importPrice, this.exportPrice);
+    public void setImportPrice(double importPrice) {
+        if (importPrice > 0) {
+            this.importPrice = importPrice;
+            calculateInterest(); // Cập nhật lợi nhuận mỗi khi giá nhập thay đổi
+        } else {
+            System.out.println("Giá nhập phải lớn hơn 0.");
+        }
     }
 
-    public int getExportPrice() {
+    public double getExportPrice() {
         return exportPrice;
     }
 
-    public void setExportPrice(int exportPrice) {
-        this.exportPrice = exportPrice;
-        this.interest = calInterest(this.importPrice, this.exportPrice);
+
+    public void setExportPrice(double exportPrice) {
+        if (exportPrice >= importPrice * 1.1) {
+            this.exportPrice = exportPrice;
+            calculateInterest(); // Cập nhật lợi nhuận mỗi khi giá xuất thay đổi
+        } else {
+            System.out.println("Giá bán phải cao hơn ít nhất 10% so với giá nhập.");
+        }
     }
 
     public String getTitle() {
@@ -65,7 +81,11 @@ public class Book {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (!title.isEmpty()) {
+            this.title = title;
+        } else {
+            System.out.println("Tiêu đề không được để trống.");
+        }
     }
 
     public String getAuthor() {
@@ -73,12 +93,17 @@ public class Book {
     }
 
     public void setAuthor(String author) {
-        this.author = author;
+        if (!author.isEmpty()) {
+            this.author = author;
+        } else {
+            System.out.println("Tác giả không được để trống.");
+        }
     }
 
-    public int getInterest() {
+    public double getInterest() {
         return interest;
     }
+
     public void setInterest(int i) {
     }
 
@@ -87,27 +112,43 @@ public class Book {
     }
 
     public void setYear(int year) {
-        this.year = year;
+        if (year > 1970) {
+            this.year = year;
+        } else {
+            System.out.println("Năm xuất bản phải sau năm 1970.");
+        }
     }
 
+    public void calculateInterest() {
+        this.interest = this.exportPrice - this.importPrice;
+    }
+
+    public boolean isValid() {
+        return bookId != null && bookId.matches("B\\d{4}") &&
+                bookName != null && bookName.length() >= 6 && bookName.length() <= 100 &&
+                importPrice > 0 && exportPrice >= importPrice * 1.1 &&
+                title != null && !title.isEmpty() &&
+                author != null && !author.isEmpty() &&
+                year > 1970;
+    }
     public void inputDataBook() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Nhập vào mã sách: ");
-        setBookId(sc.nextInt());
-        sc.nextLine();
-        System.out.println("Nhập vào tên sách: ");
+        System.out.print("Nhập mã sách (Bxxxx): ");
+        setBookId(sc.nextLine());
+        System.out.print("Nhập tên sách: ");
         setBookName(sc.nextLine());
-        System.out.println("Giá nhập sách: ");
-        setImportPrice(sc.nextInt());
-        System.out.println("Giá bán ra: ");
-        setExportPrice(sc.nextInt());
+        System.out.print("Nhập giá nhập: ");
+        setImportPrice(sc.nextDouble());
+        System.out.print("Nhập giá bán: ");
+        setExportPrice(sc.nextDouble());
         sc.nextLine();
-        System.out.println("Nhập tiêu đề sách: ");
+        System.out.print("Nhập tiêu đề: ");
         setTitle(sc.nextLine());
-        System.out.println("Nhập tên tác giả: ");
+        System.out.print("Nhập tên tác giả: ");
         setAuthor(sc.nextLine());
-        System.out.println("Năm xuất bản: ");
+        System.out.print("Nhập năm xuất bản: ");
         setYear(sc.nextInt());
+        calculateInterest();
     }
 
     public void displayBook() {
