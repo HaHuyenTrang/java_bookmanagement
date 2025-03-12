@@ -74,25 +74,25 @@ public class BookManagement {
                         }
                         break;
                     case 5:
-//                        System.out.print("Nhập ID sách cần xóa: ");
-//                        String deleteId = scanner.nextLine();
-//                        boolean found = false;
-//                        for (int i = 0; i < count; i++) {
-//                            if (books[i].getBookId().equals(deleteId)) {
-//                                for (int j = i; j < count - 1; j++) {
-//                                    books[j] = books[j + 1];
-//                                }
-//                                books[count - 1] = null;
-//                                count--;
-//                                System.out.println("Xóa thành công!");
-//                                found = true;
-//                                break;
-//                            }
-//                        }
-//                        if (!found) {
-//                            System.out.println("Không tìm thấy sách với ID đã nhập!");
-//                        }
-//                        break;
+                        System.out.print("Nhập ID sách cần xóa: ");
+                        String deleteId = scanner.nextLine();
+                        boolean found = false;
+                        for (int i = 0; i < count; i++) {
+                            if (books[i].getBookId().equals(deleteId)) {
+                                for (int j = i; j < count - 1; j++) {
+                                    books[j] = books[j + 1];
+                                }
+                                books[count - 1] = null;
+                                count--;
+                                System.out.println("Xóa thành công!");
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            System.out.println("Không tìm thấy sách với ID đã nhập!");
+                        }
+                        break;
                     case 6:
                         for (int i = 0; i < count - 1; i++) {
                             for (int j = i + 1; j < count; j++) {
@@ -137,7 +137,7 @@ public class BookManagement {
                     default:
                         System.out.println("Lựa chọn không hợp lệ!");
                 }
-            } while (choice != 5);
+            } while (choice != 10);
         }
 
 }
